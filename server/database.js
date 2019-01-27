@@ -64,6 +64,23 @@ module.exports = {
   addAsk: function addAsk(requestBody) {
     var obj = convertAskGiveBody(requestBody);
 
+    // Optional matching
+    for (var i = 0; i < gives.length; i++) {
+      // First unmatched Give which has the same item
+      if (gives[i]['status-value'] == 0 && gives[i]['item'] === obj['item']) {
+        give = gives[i];
+        give['status-value']++;
+        give['ask-id'] = obj['id'];
+
+        obj['status-value']++;
+        obj['give-id'] = give['id']
+
+        console.log(
+          '[DEBUG] Connected corresponding unmatched Give to this Ask');
+        break;
+      }
+    }
+
     console.log(
       '[DEBUG] Creating Ask ID {' + obj['id'] +
       '} containing ' + JSON.stringify(obj));

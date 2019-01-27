@@ -2,6 +2,17 @@
 
 cd $(dirname $0)
 
+./api-calls/gives/add-give "Carol" "cchan@gmail.com" Vancouver "Socks" 2
+echo
+echo
+./api-calls/gives/add-give "Carmen" "carmen-yang@gmail.com" Surrey "Jackets" 1
+echo
+echo
+./api-calls/gives/add-give "nwHacks" "nwhacks@gmail.com" Vancouver "Blankets" 1
+echo
+echo
+./api-calls/gives/add-give "Darren" "dlevin@gmail.com" Richmond "Shirts" 2
+
 ./api-calls/asks/add-ask "John" "johndoe@gmail.com" Vancouver "Water" 3
 echo
 echo
@@ -11,17 +22,6 @@ echo
 ./api-calls/asks/add-ask "Anmol" "anmol@sfu.ca" Burnaby "Movers" 1
 echo
 echo
-./api-calls/asks/add-ask "Kieran" "kcc@gmail.com" Surrey "Blankets" 1
+./api-calls/asks/add-ask "Kieran" "kcc@gmail.com" Surrey "Shampoo" 1
 echo
 echo
-
-./api-calls/gives/add-give "Carol" "cchan@gmail.com" Vancouver "Socks" 2
-echo
-echo
-./api-calls/gives/add-give "Carmen" "carmen-yang@gmail.com" Surrey "Jackets" 1
-echo
-echo
-./api-calls/gives/add-give "nwHacks" "nwhacks@gmail.com" Vancouver "Shampoo" 1
-echo
-echo
-./api-calls/gives/add-give "Darren" "dlevin@gmail.com" Richmond "Shirts" 2
