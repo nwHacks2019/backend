@@ -42,7 +42,10 @@ function setMappings(dispatcher) {
       responseCode = 500
     }
 
-    response.writeHead(responseCode);
+    response.writeHead(responseCode, {
+        'Access-Control-Allow-Origin' : '*',
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
+    });
     console.log('Replying to request with HTTP ' + response.statusCode);
     console.log();
     response.end(JSON.stringify(body));
@@ -59,7 +62,10 @@ function setMappings(dispatcher) {
       responseCode = 500
     }
 
-    response.writeHead(responseCode);
+    response.writeHead(responseCode, {
+      'Access-Control-Allow-Origin' : '*',
+      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
+    });
     console.log('Replying to request with HTTP ' + response.statusCode);
     console.log();
     response.end(JSON.stringify(body));
@@ -78,7 +84,10 @@ function setMappings(dispatcher) {
       responseCode = 500
     }
 
-    response.writeHead(201);
+    response.writeHead(responseCode, {
+      'Access-Control-Allow-Origin' : '*',
+      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
+    });
     console.log('Replying to request with HTTP ' + response.statusCode);
     console.log();
     response.end(JSON.stringify(body));
@@ -95,7 +104,10 @@ function setMappings(dispatcher) {
       responseCode = 500
     }
 
-    response.writeHead(responseCode);
+    response.writeHead(responseCode, {
+      'Access-Control-Allow-Origin' : '*',
+      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
+    });
     console.log('Replying to request with HTTP ' + response.statusCode);
     console.log();
     response.end(JSON.stringify(body));
@@ -123,7 +135,10 @@ function setMappings(dispatcher) {
       };
     }
 
-    response.writeHead(responseCode);
+    response.writeHead(responseCode, {
+      'Access-Control-Allow-Origin' : '*',
+      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
+    });
     console.log('Replying to request with HTTP ' + response.statusCode);
     console.log();
     response.end(JSON.stringify(body));
