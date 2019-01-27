@@ -2,26 +2,26 @@
 
 cd $(dirname $0)
 
-./api-calls/asks/add-ask "John" "johndoe@gmail.com" "Water" 3
+./api-calls/asks/add-ask "John" "johndoe@gmail.com" Vancouver "Water" 3
 echo
 echo
-./api-calls/asks/add-ask "Jeffrey" "jleung513@gmail.com" "Blankets" 1
+./api-calls/asks/add-ask "Jeffrey" "jleung513@gmail.com" Vancouver "Blankets" 1
 echo
 echo
-./api-calls/asks/add-ask "Anmol" "anmol@sfu.ca" "Movers" 1
+./api-calls/asks/add-ask "Anmol" "anmol@sfu.ca" Burnaby "Movers" 1
 echo
 echo
-./api-calls/asks/add-ask "Kieran" "kcc@gmail.com" "Blankets" 1
+./api-calls/asks/add-ask "Kieran" "kcc@gmail.com" Surrey "Blankets" 1
 echo
 echo
 
-./api-calls/gives/add-give "Carol" "cchan@gmail.com" "Socks" 2
+./api-calls/gives/add-give "Carol" "cchan@gmail.com" Vancouver "Socks" 2
 echo
 echo
-./api-calls/gives/add-give "Carmen" "carmen-yang@gmail.com" "Jackets" 1
+./api-calls/gives/add-give "Carmen" "carmen-yang@gmail.com" Surrey "Jackets" 1
 echo
 echo
-./api-calls/gives/add-give "nwHacks" "nwhacks@gmail.com" "Shampoo" 1
+./api-calls/gives/add-give "nwHacks" "nwhacks@gmail.com" Vancouver "Shampoo" 1
 echo
 echo
-./api-calls/gives/add-give "Darren" "dlevin@gmail.com" "Shirts" 2
+./api-calls/gives/add-give "Darren" "dlevin@gmail.com" Richmond "Shirts" 2

@@ -20,6 +20,7 @@ function convertAskGiveBody(requestBody) {
     'user': {
       'name': requestBody['user']['name'],
       'email': requestBody['user']['email'],
+      'location': requestBody['user']['location']
     },
     'item': requestBody['item'],
     'quantity': requestBody['quantity']
