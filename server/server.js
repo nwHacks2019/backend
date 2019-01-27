@@ -29,29 +29,53 @@ function setMappings(dispatcher) {
   });
 
   dispatcher.onPost(mappings['ask'], function(req, response) {
-    var body = {
-      'id': database.addAsk(JSON.parse(req.body))
-    };
+    var responseCode = 201;
+    var body = {};
 
-    response.writeHead(201);
+    try {
+      var body = {
+        'id': database.addAsk(JSON.parse(req.body))
+      };
+    } catch (except) {
+      console.log('Error: ' + except);
+      responseCode = 500
+    }
+
+    response.writeHead(responseCode);
     console.log('Replying to request with HTTP ' + response.statusCode);
     console.log();
     response.end(JSON.stringify(body));
   });
 
   dispatcher.onGet(mappings['ask'], function(req, response) {
-    var body = database.getAllAsks();
+    var responseCode = 200;
+    var body = {};
 
-    response.writeHead(200);
+    try {
+      var body = database.getAllAsks();
+    } catch (except) {
+      console.log('Error: ' + except);
+      responseCode = 500
+    }
+
+    response.writeHead(responseCode);
     console.log('Replying to request with HTTP ' + response.statusCode);
     console.log();
     response.end(JSON.stringify(body));
   });
 
   dispatcher.onPost(mappings['seek'], function(req, response) {
-    var body = {
-      'id': database.addSeek(JSON.parse(req.body))
-    };
+    var responseCode = 200;
+    var body = {};
+
+    try {
+      var body = {
+        'id': database.addSeek(JSON.parse(req.body))
+      };
+    } catch (except) {
+      console.log('Error: ' + except);
+      responseCode = 500
+    }
 
     response.writeHead(201);
     console.log('Replying to request with HTTP ' + response.statusCode);
@@ -60,9 +84,17 @@ function setMappings(dispatcher) {
   });
 
   dispatcher.onGet(mappings['seek'], function(req, response) {
-    var body = database.getAllSeeks();
+    var responseCode = 200;
+    var body = {};
 
-    response.writeHead(200);
+    try {
+      var body = database.getAllSeeks();
+    } catch (except) {
+      console.log('Error: ' + except);
+      responseCode = 500
+    }
+
+    response.writeHead(responseCode);
     console.log('Replying to request with HTTP ' + response.statusCode);
     console.log();
     response.end(JSON.stringify(body));
