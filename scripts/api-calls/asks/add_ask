@@ -1,0 +1,15 @@
+#!/bin/sh
+
+cd $(dirname $0)
+base_url=$(../utility/base_url)
+
+if [ $# -ge 4 ] ; then
+    curl \
+      --include \
+      --request POST  \
+      --header "Content-Type: application/json" \
+      --data  '{"seeker": {"name": "'$1'", "email": "'$2'"}, "item": "'$3'", "quantity":'$4' }' \
+      $base_url/ask
+else
+    echo "Usage: ./add_ask name email item quantity"
+fi

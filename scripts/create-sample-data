@@ -1,0 +1,9 @@
+#!/bin/sh
+
+./api-calls/asks/add_ask "John" "johndoe@gmail.com" "Water" 3
+./api-calls/asks/add_ask "Jeffrey" "jleung513@gmail.com" "Blankets" 1
+./api-calls/asks/add_ask "Anmol" "anmol@sfu.ca" "Movers" 1
+./api-calls/asks/add_ask "Carol" "cchan@gmail.com" "Socks" 2
+./api-calls/asks/add_ask "Carmen" "carmen-yang@gmail.com" "Jackets" 1
+./api-calls/asks/add_ask "nwHacks" "nwhacks@gmail.com" "Blankets" 1
+./api-calls/asks/add_ask "Darren" "dlevin@gmail.com" "Shirts" 2

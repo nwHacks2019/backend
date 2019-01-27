@@ -1,0 +1,5 @@
+#!/bin/sh
+
+local="http://localhost:3000"
+
+echo $local
