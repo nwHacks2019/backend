@@ -19,5 +19,9 @@ module.exports = {
 
     asks.push(obj);
     return id;
+  },
+
+  getAllAsks: function getAllAsks() {
+    return asks;
   }
 };

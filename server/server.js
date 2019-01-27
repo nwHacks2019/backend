@@ -39,6 +39,15 @@ function setMappings(dispatcher) {
     response.end(JSON.stringify(body));
   });
 
+  dispatcher.onGet(mappings['ask'], function(req, response) {
+    var body = database.getAllAsks();
+
+    response.writeHead(200);
+    console.log('Replying to request with HTTP ' + response.statusCode);
+    console.log();
+    response.end(JSON.stringify(body));
+  });
+
 }
 
 function main() {
