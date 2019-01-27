@@ -119,7 +119,9 @@ module.exports = {
       var ask = findAsk(give['ask-id']);
       ask['status-value'] = requestState.length-1;  // Last value
     }
-    console.log('[DEBUG] No linked Ask')
+    else {
+      console.log('[DEBUG] No linked Ask')
+    }
 
     give['status-value'] = requestState.length-1;  // Last value
     return getStatus(give);
