@@ -1,0 +1,10 @@
+#!/bin/sh
+
+cd $(dirname $0)
+base_url=$(../utility/base_url)
+
+curl \
+  --include \
+  --request POST  \
+  --header "Content-Type: application/json" \
+  $base_url/clear

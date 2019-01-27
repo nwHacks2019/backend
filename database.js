@@ -151,6 +151,11 @@ module.exports = {
       convertStatusValueToStatus(givesReturn[i])
     }
     return givesReturn;
+  },
+
+  clearAll: function clearAll() {
+    asks = [];
+    gives = [];
   }
 
 };

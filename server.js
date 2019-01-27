@@ -16,7 +16,8 @@ const mappings = {
   'home': '/',
   'ask': '/ask',
   'askStatus': '/ask/status',
-  'give': '/give'
+  'give': '/give',
+  'clear': '/clear'
 };
 
 // This function sets the URL mappings for endpoints.
@@ -134,6 +135,21 @@ function setMappings(dispatcher) {
       console.log('Error: ' + except);
       responseCode = 500
     }
+
+    response.writeHead(responseCode, {
+      'Access-Control-Allow-Origin' : '*',
+      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
+    });
+    console.log('Replying to request with HTTP ' + response.statusCode);
+    console.log();
+    response.end(JSON.stringify(body));
+  });
+
+  dispatcher.onPost(mappings['clear'], function(req, response) {
+    var responseCode = 200;
+    var body = {};
+
+    database.clearAll()
 
     response.writeHead(responseCode, {
       'Access-Control-Allow-Origin' : '*',
