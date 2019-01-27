@@ -1,5 +1,7 @@
 # nwHacks 2019: Backend
 
+Express server for processing and storing community help requests for the Give+Seek application.
+
 ## Setup
 
 First, install NodeJS.
