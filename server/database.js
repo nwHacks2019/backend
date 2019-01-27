@@ -14,6 +14,24 @@ const requestState = [
   'fulfilled'
 ];
 
+function findAsk(id) {
+  for (var i = 0; i < asks.length; i++) {
+    if (id === asks[i]['id']) {
+      return asks[i];
+    }
+  }
+  return {};
+}
+
+function findGive(id) {
+  for (var i = 0; i < gives.length; i++) {
+    if (id === gives[i]['id']) {
+      return gives[i];
+    }
+  }
+  return {};
+}
+
 function convertAskGiveBody(requestBody) {
   var obj = { // Cloned fields from requestBody
     'user-name': requestBody['user-name'],
@@ -81,8 +99,9 @@ module.exports = {
     return givesReturn;
   },
 
-  // If the status value is the greatest possible value, it will not be
-  // modified.
+  // This function also fulfills the Ask linked to this Give, if any exists.
+  // If the status is already fulfilled, it will not be modified, but
+  // the linked Ask (if any) will still be fulfilled.
   //
   // Returns:
   //   On success: New status (String)
@@ -90,14 +109,20 @@ module.exports = {
   fulfillGiveStatus: function fulfillGiveStatus(requestBody) {
     var id = requestBody['id'];
 
-    for (var i = 0; i < gives.length; i++) {
-      if (id === gives[i]['id']) {
-        gives[i]['status-value'] = requestState.length-1;
-        return getStatus(gives[i]);
-      }
+    var give = findGive(id);
+    if (give == {}) {
+      return "";
     }
 
-    return "";
+    if ('ask-id' in give) {
+      console.log('[DEBUG] Fulfilling linked Ask with id {' + give['ask-id'] + '}')
+      var ask = findAsk(give['ask-id']);
+      ask['status-value'] = requestState.length-1;  // Last value
+    }
+    console.log('[DEBUG] No linked Ask')
+
+    give['status-value'] = requestState.length-1;  // Last value
+    return getStatus(give);
   }
 
 };
