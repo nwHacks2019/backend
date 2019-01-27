@@ -4,6 +4,18 @@ const timestamp = require('unix-timestamp');
 var asks = [];
 var gives = [];
 
+function copyJsonObject(object) {
+  return JSON.parse(JSON.stringify(object));
+}
+
+const requestState = [
+  'unmatched',
+  'matched-unconfirmed',
+  'matched-confirmed',
+  'matched-inprogress',
+  'fulfilled'
+];
+
 function convertAskGiveBody(requestBody) {
   var obj = { // Cloned fields from requestBody
     'user': {
@@ -18,9 +30,15 @@ function convertAskGiveBody(requestBody) {
   var id = uuidv4();
   obj['id'] = id;
   obj['posted'] = timestamp.now();
+  obj['status-value'] = 0;
 
   return obj;
 };
+
+function convertStatusValueToStatus(obj) {
+  obj['status'] = requestState[obj['status-value']];
+  delete obj['status-value'];
+}
 
 module.exports = {
 
@@ -47,11 +65,19 @@ module.exports = {
   },
 
   getAllAsks: function getAllAsks() {
-    return asks;
+    var asksReturn = copyJsonObject(asks);
+    for (var i = 0; i < asksReturn.length; i++) {
+      convertStatusValueToStatus(asksReturn[i])
+    }
+    return asksReturn;
   },
 
   getAllGives: function getAllGives() {
-    return gives;
+    var givesReturn = copyJsonObject(gives);
+    for (var i = 0; i < givesReturn.length; i++) {
+      convertStatusValueToStatus(givesReturn[i])
+    }
+    return givesReturn;
   }
 
 };
