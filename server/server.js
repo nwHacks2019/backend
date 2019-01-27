@@ -28,7 +28,6 @@ function setMappings(dispatcher) {
   });
 
   dispatcher.onPost(mappings['ask'], function(req, response) {
-    console.log(JSON.parse(req.body));
     var body = {
       'id': database.addAsk(JSON.parse(req.body))
     };
