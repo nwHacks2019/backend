@@ -76,7 +76,8 @@ module.exports = {
         obj['give-id'] = give['id']
 
         console.log(
-          '[DEBUG] Connected corresponding unmatched Give to this Ask');
+          '[DEBUG] Connected corresponding unmatched Give with id {' +
+          give['id'] + '} to this Ask');
         break;
       }
     }
@@ -87,6 +88,34 @@ module.exports = {
 
     asks.push(obj);
     return obj['id'];
+  },
+
+  // This function also fulfills the Give linked to this Ask, if any exists.
+  // If the status is already fulfilled, it will not be modified, but
+  // the linked Give (if any) will still be fulfilled.
+  //
+  // Returns:
+  //   On success: New status (String)
+  //   If the ID was not found: Empty string
+  fulfillAskStatus: function fulfillAskStatus(requestBody) {
+    var id = requestBody['id'];
+
+    var ask = findAsk(id);
+    if (ask == {}) {
+      return "";
+    }
+
+    if ('give-id' in ask) {
+      console.log('[DEBUG] Fulfilling linked Give with id {' + ask['give-id'] + '}')
+      var give = findGive(ask['give-id']);
+      give['status-value'] = requestState.length-1;  // Last value
+    }
+    else {
+      console.log('[DEBUG] No linked Give')
+    }
+
+    ask['status-value'] = requestState.length-1;  // Last value
+    return getStatus(ask);
   },
 
   addGive: function addGive(requestBody) {
@@ -114,34 +143,6 @@ module.exports = {
       convertStatusValueToStatus(givesReturn[i])
     }
     return givesReturn;
-  },
-
-  // This function also fulfills the Ask linked to this Give, if any exists.
-  // If the status is already fulfilled, it will not be modified, but
-  // the linked Ask (if any) will still be fulfilled.
-  //
-  // Returns:
-  //   On success: New status (String)
-  //   If the ID was not found: Empty string
-  fulfillGiveStatus: function fulfillGiveStatus(requestBody) {
-    var id = requestBody['id'];
-
-    var give = findGive(id);
-    if (give == {}) {
-      return "";
-    }
-
-    if ('ask-id' in give) {
-      console.log('[DEBUG] Fulfilling linked Ask with id {' + give['ask-id'] + '}')
-      var ask = findAsk(give['ask-id']);
-      ask['status-value'] = requestState.length-1;  // Last value
-    }
-    else {
-      console.log('[DEBUG] No linked Ask')
-    }
-
-    give['status-value'] = requestState.length-1;  // Last value
-    return getStatus(give);
   }
 
 };

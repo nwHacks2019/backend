@@ -9,7 +9,7 @@ if [ $# -ge 1 ] ; then
       --request POST \
       --header "Content-Type: application/json" \
       --data  '{"id": "'$1'"}' \
-      $base_url/give/status
+      $base_url/ask/status
 else
-    echo "Usage: ./fulfill-give-status id"
+    echo "Usage: ./fulfill-ask-status id"
 fi

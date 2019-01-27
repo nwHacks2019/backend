@@ -15,8 +15,8 @@ const serverOptions = {
 const mappings = {
   'home': '/',
   'ask': '/ask',
-  'give': '/give',
-  'giveStatus': '/give/status',
+  'askStatus': '/ask/status',
+  'give': '/give'
 };
 
 // This function sets the URL mappings for endpoints.
@@ -71,6 +71,37 @@ function setMappings(dispatcher) {
     response.end(JSON.stringify(body));
   });
 
+  dispatcher.onPost(mappings['askStatus'], function(req, response) {
+    var responseCode = 200;
+    var body = {};
+
+    try {
+      var updatedStatus = database.fulfillAskStatus(JSON.parse(req.body));
+    } catch (except) {
+      console.log('Error: ' + except);
+      responseCode = 500;
+    }
+
+    if (updatedStatus == "") {
+      responseCode = 400;
+      body = {
+        "error": "The given ID was not found."
+      };
+    } else {
+      body = {
+        'id': updatedStatus
+      };
+    }
+
+    response.writeHead(responseCode, {
+      'Access-Control-Allow-Origin' : '*',
+      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
+    });
+    console.log('Replying to request with HTTP ' + response.statusCode);
+    console.log();
+    response.end(JSON.stringify(body));
+  });
+
   dispatcher.onPost(mappings['give'], function(req, response) {
     var responseCode = 200;
     var body = {};
@@ -102,37 +133,6 @@ function setMappings(dispatcher) {
     } catch (except) {
       console.log('Error: ' + except);
       responseCode = 500
-    }
-
-    response.writeHead(responseCode, {
-      'Access-Control-Allow-Origin' : '*',
-      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
-    });
-    console.log('Replying to request with HTTP ' + response.statusCode);
-    console.log();
-    response.end(JSON.stringify(body));
-  });
-
-  dispatcher.onPost(mappings['giveStatus'], function(req, response) {
-    var responseCode = 200;
-    var body = {};
-
-    try {
-      var updatedStatus = database.fulfillGiveStatus(JSON.parse(req.body));
-    } catch (except) {
-      console.log('Error: ' + except);
-      responseCode = 500;
-    }
-
-    if (updatedStatus == "") {
-      responseCode = 400;
-      body = {
-        "error": "The given ID was not found."
-      };
-    } else {
-      body = {
-        'id': updatedStatus
-      };
     }
 
     response.writeHead(responseCode, {
