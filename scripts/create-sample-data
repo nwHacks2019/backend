@@ -1,5 +1,7 @@
 #!/bin/sh
 
+cd $(dirname $0)
+
 ./api-calls/asks/add_ask "John" "johndoe@gmail.com" "Water" 3
 ./api-calls/asks/add_ask "Jeffrey" "jleung513@gmail.com" "Blankets" 1
 ./api-calls/asks/add_ask "Anmol" "anmol@sfu.ca" "Movers" 1
