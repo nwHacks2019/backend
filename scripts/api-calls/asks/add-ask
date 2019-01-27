@@ -8,7 +8,7 @@ if [ $# -ge 4 ] ; then
       --include \
       --request POST  \
       --header "Content-Type: application/json" \
-      --data  '{"seeker": {"name": "'$1'", "email": "'$2'"}, "item": "'$3'", "quantity":'$4' }' \
+      --data  '{"user": {"name": "'$1'", "email": "'$2'"}, "item": "'$3'", "quantity":'$4' }' \
       $base_url/ask
 else
     echo "Usage: ./add_ask name email item quantity"

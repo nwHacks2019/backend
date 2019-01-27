@@ -6,9 +6,9 @@ var asks = [];
 module.exports = {
   addAsk: function addAsk(requestBody) {
     var obj = { // Cloned fields from requestBody
-      'seeker': {
-        'name': requestBody['seeker']['name'],
-        'email': requestBody['seeker']['email'],
+      'user': {
+        'name': requestBody['user']['name'],
+        'email': requestBody['user']['email'],
       },
       'item': requestBody['item'],
       'quantity': requestBody['quantity']
