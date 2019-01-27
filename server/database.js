@@ -10,8 +10,7 @@ function copyJsonObject(object) {
 
 const requestState = [
   'unmatched',
-  'matched-unconfirmed',
-  'matched-confirmed',
+  'matched-new',
   'matched-inprogress',
   'fulfilled'
 ];
