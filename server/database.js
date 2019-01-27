@@ -17,11 +17,9 @@ const requestState = [
 
 function convertAskGiveBody(requestBody) {
   var obj = { // Cloned fields from requestBody
-    'user': {
-      'name': requestBody['user']['name'],
-      'email': requestBody['user']['email'],
-      'location': requestBody['user']['location']
-    },
+    'user-name': requestBody['user-name'],
+    'user-email': requestBody['user-email'],
+    'user-location': requestBody['user-location'],
     'item': requestBody['item'],
     'quantity': requestBody['quantity']
   }
