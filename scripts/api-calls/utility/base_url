@@ -1,5 +1,6 @@
 #!/bin/sh
 
 local="http://localhost:3000"
+prod="http://giveseek.appspot.com"
 
 echo $local
