@@ -34,9 +34,9 @@ function findGive(id) {
 
 function convertAskGiveBody(requestBody) {
   var obj = { // Cloned fields from requestBody
-    'user-name': requestBody['user-name'],
-    'user-email': requestBody['user-email'],
-    'user-location': requestBody['user-location'],
+    'user_name': requestBody['user_name'],
+    'user_email': requestBody['user_email'],
+    'user_location': requestBody['user_location'],
     'item': requestBody['item'],
     'quantity': requestBody['quantity']
   }
@@ -45,32 +45,32 @@ function convertAskGiveBody(requestBody) {
   var id = uuidv4();
   obj['id'] = id;
   obj['posted'] = timestamp.now();
-  obj['status-value'] = 0;
+  obj['status_value'] = 0;
 
   return obj;
 };
 
 function getStatus(obj) {
-  return requestState[obj['status-value']];
+  return requestState[obj['status_value']];
 }
 
 function convertStatusValueToStatus(obj) {
   obj['status'] = getStatus(obj);
-  delete obj['status-value'];
+  delete obj['status_value'];
 }
 
 function connectAskGive(ask, give) {
-  give['status-value']++;
-  give['ask-id'] = ask['id'];
-  give['match-name'] = ask['user-name']
-  give['match-email'] = ask['user-email']
-  give['match-location'] = ask['user-location']
+  give['status_value']++;
+  give['ask_id'] = ask['id'];
+  give['match_name'] = ask['user_name']
+  give['match_email'] = ask['user_email']
+  give['match_location'] = ask['user_location']
 
-  ask['status-value']++;
-  ask['give-id'] = give['id']
-  ask['match-name'] = give['user-name']
-  ask['match-email'] = give['user-email']
-  ask['match-location'] = give['user-location']
+  ask['status_value']++;
+  ask['give_id'] = give['id']
+  ask['match_name'] = give['user_name']
+  ask['match_email'] = give['user_email']
+  ask['match_location'] = give['user_location']
 
   console.log(
     '[DEBUG] Connected corresponding unmatched Give with id {' +
@@ -85,7 +85,7 @@ module.exports = {
     // Optional matching
     for (var i = 0; i < gives.length; i++) {
       // First unmatched Give which has the same item
-      if (gives[i]['status-value'] == 0 && gives[i]['item'] === obj['item']) {
+      if (gives[i]['status_value'] == 0 && gives[i]['item'] === obj['item']) {
         connectAskGive(obj, gives[i]);
         break;
       }
@@ -114,15 +114,15 @@ module.exports = {
       return "";
     }
 
-    if ('give-id' in ask) {
-      console.log('[DEBUG] Fulfilling linked Give with id {' + ask['give-id'] + '}')
-      var give = findGive(ask['give-id']);
-      give['status-value'] = requestState.length - 1; // Last value
+    if ('give_id' in ask) {
+      console.log('[DEBUG] Fulfilling linked Give with id {' + ask['give_id'] + '}')
+      var give = findGive(ask['give_id']);
+      give['status_value'] = requestState.length - 1; // Last value
     } else {
       console.log('[DEBUG] No linked Give')
     }
 
-    ask['status-value'] = requestState.length - 1; // Last value
+    ask['status_value'] = requestState.length - 1; // Last value
     return getStatus(ask);
   },
 
