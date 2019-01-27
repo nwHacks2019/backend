@@ -3,6 +3,8 @@ var request = require('request');
 var HttpDispatcher = require('httpdispatcher');
 var dispatcher = new HttpDispatcher();
 
+var database = require('./database');
+
 const express = require('express');
 const app = express();
 
@@ -26,10 +28,15 @@ function setMappings(dispatcher) {
   });
 
   dispatcher.onPost(mappings['ask'], function(req, response) {
+    console.log(JSON.parse(req.body));
+    var body = {
+      'id': database.addAsk(JSON.parse(req.body))
+    };
+
     response.writeHead(201);
     console.log('Replying to request with HTTP ' + response.statusCode);
     console.log();
-    response.end('Hello World!');
+    response.end(JSON.stringify(body));
   });
 
 }
