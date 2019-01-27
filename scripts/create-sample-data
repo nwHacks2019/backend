@@ -5,7 +5,9 @@ cd $(dirname $0)
 ./api-calls/asks/add-ask "John" "johndoe@gmail.com" "Water" 3
 ./api-calls/asks/add-ask "Jeffrey" "jleung513@gmail.com" "Blankets" 1
 ./api-calls/asks/add-ask "Anmol" "anmol@sfu.ca" "Movers" 1
-./api-calls/asks/add-ask "Carol" "cchan@gmail.com" "Socks" 2
-./api-calls/asks/add-ask "Carmen" "carmen-yang@gmail.com" "Jackets" 1
-./api-calls/asks/add-ask "nwHacks" "nwhacks@gmail.com" "Blankets" 1
-./api-calls/asks/add-ask "Darren" "dlevin@gmail.com" "Shirts" 2
+./api-calls/asks/add-ask "Kieran" "kcc@gmail.com" "Blankets" 1
+
+./api-calls/seeks/add-seek "Carol" "cchan@gmail.com" "Socks" 2
+./api-calls/seeks/add-seek "Carmen" "carmen-yang@gmail.com" "Jackets" 1
+./api-calls/seeks/add-seek "nwHacks" "nwhacks@gmail.com" "Shampoo" 1
+./api-calls/seeks/add-seek "Darren" "dlevin@gmail.com" "Shirts" 2

@@ -14,7 +14,8 @@ const serverOptions = {
 
 const mappings = {
   'home': '/',
-  'ask': '/ask'
+  'ask': '/ask',
+  'seek': '/seek',
 };
 
 // This function sets the URL mappings for endpoints.
@@ -40,6 +41,26 @@ function setMappings(dispatcher) {
 
   dispatcher.onGet(mappings['ask'], function(req, response) {
     var body = database.getAllAsks();
+
+    response.writeHead(200);
+    console.log('Replying to request with HTTP ' + response.statusCode);
+    console.log();
+    response.end(JSON.stringify(body));
+  });
+
+  dispatcher.onPost(mappings['seek'], function(req, response) {
+    var body = {
+      'id': database.addSeek(JSON.parse(req.body))
+    };
+
+    response.writeHead(201);
+    console.log('Replying to request with HTTP ' + response.statusCode);
+    console.log();
+    response.end(JSON.stringify(body));
+  });
+
+  dispatcher.onGet(mappings['seek'], function(req, response) {
+    var body = database.getAllSeeks();
 
     response.writeHead(200);
     console.log('Replying to request with HTTP ' + response.statusCode);
