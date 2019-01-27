@@ -62,9 +62,15 @@ function convertStatusValueToStatus(obj) {
 function connectAskGive(ask, give) {
   give['status-value']++;
   give['ask-id'] = ask['id'];
+  give['match-name'] = ask['user-name']
+  give['match-email'] = ask['user-email']
+  give['match-location'] = ask['user-location']
 
   ask['status-value']++;
   ask['give-id'] = give['id']
+  ask['match-name'] = give['user-name']
+  ask['match-email'] = give['user-email']
+  ask['match-location'] = give['user-location']
 
   console.log(
     '[DEBUG] Connected corresponding unmatched Give with id {' +
