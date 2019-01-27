@@ -16,6 +16,7 @@ const mappings = {
   'home': '/',
   'ask': '/ask',
   'give': '/give',
+  'giveStatus': '/give/status',
 };
 
 // This function sets the URL mappings for endpoints.
@@ -92,6 +93,34 @@ function setMappings(dispatcher) {
     } catch (except) {
       console.log('Error: ' + except);
       responseCode = 500
+    }
+
+    response.writeHead(responseCode);
+    console.log('Replying to request with HTTP ' + response.statusCode);
+    console.log();
+    response.end(JSON.stringify(body));
+  });
+
+  dispatcher.onPost(mappings['giveStatus'], function(req, response) {
+    var responseCode = 200;
+    var body = {};
+
+    try {
+      var updatedStatus = database.fulfillGiveStatus(JSON.parse(req.body));
+    } catch (except) {
+      console.log('Error: ' + except);
+      responseCode = 500;
+    }
+
+    if (updatedStatus == "") {
+      responseCode = 400;
+      body = {
+        "error": "The given ID was not found."
+      };
+    } else {
+      body = {
+        'id': updatedStatus
+      };
     }
 
     response.writeHead(responseCode);

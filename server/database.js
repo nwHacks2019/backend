@@ -10,8 +10,7 @@ function copyJsonObject(object) {
 
 const requestState = [
   'unmatched',
-  'matched-new',
-  'matched-inprogress',
+  'matched',
   'fulfilled'
 ];
 
@@ -33,8 +32,12 @@ function convertAskGiveBody(requestBody) {
   return obj;
 };
 
+function getStatus(obj) {
+  return requestState[obj['status-value']];
+}
+
 function convertStatusValueToStatus(obj) {
-  obj['status'] = requestState[obj['status-value']];
+  obj['status'] = getStatus(obj);
   delete obj['status-value'];
 }
 
@@ -76,6 +79,25 @@ module.exports = {
       convertStatusValueToStatus(givesReturn[i])
     }
     return givesReturn;
+  },
+
+  // If the status value is the greatest possible value, it will not be
+  // modified.
+  //
+  // Returns:
+  //   On success: New status (String)
+  //   If the ID was not found: Empty string
+  fulfillGiveStatus: function fulfillGiveStatus(requestBody) {
+    var id = requestBody['id'];
+
+    for (var i = 0; i < gives.length; i++) {
+      if (id === gives[i]['id']) {
+        gives[i]['status-value'] = requestState.length-1;
+        return getStatus(gives[i]);
+      }
+    }
+
+    return "";
   }
 
 };
