@@ -59,6 +59,18 @@ function convertStatusValueToStatus(obj) {
   delete obj['status-value'];
 }
 
+function connectAskGive(ask, give) {
+  give['status-value']++;
+  give['ask-id'] = ask['id'];
+
+  ask['status-value']++;
+  ask['give-id'] = give['id']
+
+  console.log(
+    '[DEBUG] Connected corresponding unmatched Give with id {' +
+    give['id'] + '} to this Ask');
+}
+
 module.exports = {
 
   addAsk: function addAsk(requestBody) {
@@ -68,16 +80,7 @@ module.exports = {
     for (var i = 0; i < gives.length; i++) {
       // First unmatched Give which has the same item
       if (gives[i]['status-value'] == 0 && gives[i]['item'] === obj['item']) {
-        give = gives[i];
-        give['status-value']++;
-        give['ask-id'] = obj['id'];
-
-        obj['status-value']++;
-        obj['give-id'] = give['id']
-
-        console.log(
-          '[DEBUG] Connected corresponding unmatched Give with id {' +
-          give['id'] + '} to this Ask');
+        connectAskGive(obj, gives[i]);
         break;
       }
     }
@@ -108,13 +111,12 @@ module.exports = {
     if ('give-id' in ask) {
       console.log('[DEBUG] Fulfilling linked Give with id {' + ask['give-id'] + '}')
       var give = findGive(ask['give-id']);
-      give['status-value'] = requestState.length-1;  // Last value
-    }
-    else {
+      give['status-value'] = requestState.length - 1; // Last value
+    } else {
       console.log('[DEBUG] No linked Give')
     }
 
-    ask['status-value'] = requestState.length-1;  // Last value
+    ask['status-value'] = requestState.length - 1; // Last value
     return getStatus(ask);
   },
 
