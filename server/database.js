@@ -2,9 +2,9 @@ const uuidv4 = require('uuid/v4');
 const timestamp = require('unix-timestamp');
 
 var asks = [];
-var seeks = [];
+var gives = [];
 
-function convertAskSeekBody(requestBody) {
+function convertAskGiveBody(requestBody) {
   var obj = { // Cloned fields from requestBody
     'user': {
       'name': requestBody['user']['name'],
@@ -25,7 +25,7 @@ function convertAskSeekBody(requestBody) {
 module.exports = {
 
   addAsk: function addAsk(requestBody) {
-    var obj = convertAskSeekBody(requestBody);
+    var obj = convertAskGiveBody(requestBody);
 
     console.log(
       '[DEBUG] Creating Ask ID {' + obj['id'] +
@@ -35,14 +35,14 @@ module.exports = {
     return obj['id'];
   },
 
-  addSeek: function addSeek(requestBody) {
-    var obj = convertAskSeekBody(requestBody);
+  addGive: function addGive(requestBody) {
+    var obj = convertAskGiveBody(requestBody);
 
     console.log(
-      '[DEBUG] Creating Seek ID {' + obj['id'] +
+      '[DEBUG] Creating Give ID {' + obj['id'] +
       '} containing ' + JSON.stringify(obj));
 
-    seeks.push(obj);
+    gives.push(obj);
     return obj['id'];
   },
 
@@ -50,8 +50,8 @@ module.exports = {
     return asks;
   },
 
-  getAllSeeks: function getAllSeeks() {
-    return seeks;
+  getAllGives: function getAllGives() {
+    return gives;
   }
 
 };

@@ -15,7 +15,7 @@ const serverOptions = {
 const mappings = {
   'home': '/',
   'ask': '/ask',
-  'seek': '/seek',
+  'give': '/give',
 };
 
 // This function sets the URL mappings for endpoints.
@@ -64,13 +64,13 @@ function setMappings(dispatcher) {
     response.end(JSON.stringify(body));
   });
 
-  dispatcher.onPost(mappings['seek'], function(req, response) {
+  dispatcher.onPost(mappings['give'], function(req, response) {
     var responseCode = 200;
     var body = {};
 
     try {
       var body = {
-        'id': database.addSeek(JSON.parse(req.body))
+        'id': database.addGive(JSON.parse(req.body))
       };
     } catch (except) {
       console.log('Error: ' + except);
@@ -83,12 +83,12 @@ function setMappings(dispatcher) {
     response.end(JSON.stringify(body));
   });
 
-  dispatcher.onGet(mappings['seek'], function(req, response) {
+  dispatcher.onGet(mappings['give'], function(req, response) {
     var responseCode = 200;
     var body = {};
 
     try {
-      var body = database.getAllSeeks();
+      var body = database.getAllGives();
     } catch (except) {
       console.log('Error: ' + except);
       responseCode = 500

@@ -9,7 +9,7 @@ if [ $# -ge 4 ] ; then
       --request POST  \
       --header "Content-Type: application/json" \
       --data  '{"user": {"name": "'$1'", "email": "'$2'"}, "item": "'$3'", "quantity":'$4' }' \
-      $base_url/seek
+      $base_url/give
 else
-    echo "Usage: ./add_seek name email item quantity"
+    echo "Usage: ./add_give name email item quantity"
 fi
