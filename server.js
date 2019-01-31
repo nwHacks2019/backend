@@ -25,8 +25,7 @@ function setMappings(dispatcher) {
 
   dispatcher.onGet(mappings['home'], function(req, response) {
     response.writeHead(200);
-    console.log('Hello World!');
-    console.log();
+    console.log('[DEBUG] Returned "Hello World!"');
     response.end('Hello World!');
   });
 
@@ -39,7 +38,7 @@ function setMappings(dispatcher) {
         'id': database.addAsk(JSON.parse(req.body))
       };
     } catch (except) {
-      console.log('Error: ' + except);
+      console.log('[ERROR] ' + except);
       responseCode = 500
     }
 
@@ -47,8 +46,7 @@ function setMappings(dispatcher) {
         'Access-Control-Allow-Origin' : '*',
         'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
     });
-    console.log('Replying to request with HTTP ' + response.statusCode);
-    console.log();
+    console.log('[INFO] Replying to request with HTTP ' + response.statusCode);
     response.end(JSON.stringify(body));
   });
 
@@ -59,7 +57,7 @@ function setMappings(dispatcher) {
     try {
       var body = database.getAllAsks();
     } catch (except) {
-      console.log('Error: ' + except);
+      console.log('[ERROR] ' + except);
       responseCode = 500
     }
 
@@ -67,8 +65,7 @@ function setMappings(dispatcher) {
       'Access-Control-Allow-Origin' : '*',
       'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
     });
-    console.log('Replying to request with HTTP ' + response.statusCode);
-    console.log();
+    console.log('[INFO] Replying to request with HTTP ' + response.statusCode);
     response.end(JSON.stringify(body));
   });
 
@@ -79,7 +76,7 @@ function setMappings(dispatcher) {
     try {
       var updatedStatus = database.fulfillAskStatus(JSON.parse(req.body));
     } catch (except) {
-      console.log('Error: ' + except);
+      console.log('[ERROR] ' + except);
       responseCode = 500;
     }
 
@@ -98,8 +95,7 @@ function setMappings(dispatcher) {
       'Access-Control-Allow-Origin' : '*',
       'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
     });
-    console.log('Replying to request with HTTP ' + response.statusCode);
-    console.log();
+    console.log('[INFO] Replying to request with HTTP ' + response.statusCode);
     response.end(JSON.stringify(body));
   });
 
@@ -112,7 +108,7 @@ function setMappings(dispatcher) {
         'id': database.addGive(JSON.parse(req.body))
       };
     } catch (except) {
-      console.log('Error: ' + except);
+      console.log('[ERROR] ' + except);
       responseCode = 500
     }
 
@@ -120,8 +116,7 @@ function setMappings(dispatcher) {
       'Access-Control-Allow-Origin' : '*',
       'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
     });
-    console.log('Replying to request with HTTP ' + response.statusCode);
-    console.log();
+    console.log('[INFO] Replying to request with HTTP ' + response.statusCode);
     response.end(JSON.stringify(body));
   });
 
@@ -132,7 +127,7 @@ function setMappings(dispatcher) {
     try {
       var body = database.getAllGives();
     } catch (except) {
-      console.log('Error: ' + except);
+      console.log('[ERROR] ' + except);
       responseCode = 500
     }
 
@@ -140,8 +135,7 @@ function setMappings(dispatcher) {
       'Access-Control-Allow-Origin' : '*',
       'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
     });
-    console.log('Replying to request with HTTP ' + response.statusCode);
-    console.log();
+    console.log('[INFO] Replying to request with HTTP ' + response.statusCode);
     response.end(JSON.stringify(body));
   });
 
@@ -155,8 +149,7 @@ function setMappings(dispatcher) {
       'Access-Control-Allow-Origin' : '*',
       'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
     });
-    console.log('Replying to request with HTTP ' + response.statusCode);
-    console.log();
+    console.log('[INFO] Replying to request with HTTP ' + response.statusCode);
     response.end(JSON.stringify(body));
   });
 
@@ -166,18 +159,16 @@ function main() {
   setMappings(dispatcher);
 
   var server = http.createServer(function(request, response) {
-    console.log('Mapped ' + request.url);
-    console.log();
+    console.log('[INFO] Mapped ' + request.url);
     try {
       dispatcher.dispatch(request, response);
     } catch (except) {
-      console.log('Error: ' + except);
+      console.log('[ERROR] ' + except);
     }
   });
 
   server.listen(serverOptions, function() {
     console.log('[INFO] Server listening on http://localhost:%s.', serverOptions['port']);
-    console.log();
   });
 }
 
