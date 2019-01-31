@@ -61,13 +61,13 @@ function convertStatusValueToStatus(obj) {
 
 function connectAskGive(ask, give) {
   give['status_value']++;
-  give['ask_id'] = ask['id'];
+  give['match_id'] = ask['id'];
   give['match_name'] = ask['user_name']
   give['match_email'] = ask['user_email']
   give['match_location'] = ask['user_location']
 
   ask['status_value']++;
-  ask['give_id'] = give['id']
+  ask['match_id'] = give['id']
   ask['match_name'] = give['user_name']
   ask['match_email'] = give['user_email']
   ask['match_location'] = give['user_location']
@@ -114,9 +114,9 @@ module.exports = {
       return "";
     }
 
-    if ('give_id' in ask) {
-      console.log('[DEBUG] Fulfilling linked Give with id {' + ask['give_id'] + '}')
-      var give = findGive(ask['give_id']);
+    if ('match_id' in ask) {
+      console.log('[DEBUG] Fulfilling linked Give with id {' + ask['match_id'] + '}')
+      var give = findGive(ask['match_id']);
       give['status_value'] = requestState.length - 1; // Last value
     } else {
       console.log('[DEBUG] No linked Give')
