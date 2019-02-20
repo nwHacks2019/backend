@@ -1,12 +1,7 @@
-var http = require('http');
-var request = require('request');
-var HttpDispatcher = require('httpdispatcher');
-var dispatcher = new HttpDispatcher();
+const bodyParser = require('body-parser');
+const app = require('express')();
 
-var database = require('./database');
-
-const express = require('express');
-const app = express();
+const database = require('./database');
 
 const serverOptions = {
   port: process.env.PORT || 3000
@@ -21,155 +16,91 @@ const mappings = {
 };
 
 // This function sets the URL mappings for endpoints.
-function setMappings(dispatcher) {
+function setMappings(app) {
 
-  dispatcher.onGet(mappings['home'], function(req, response) {
-    response.writeHead(200);
-    console.log('[DEBUG] Returned "Hello World!"');
-    response.end('Hello World!');
+  app.use(bodyParser.json());
+
+  app.all('*', function(req, res, next) {
+    console.log(`[INFO] Mapped ${req.url}`);
+
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+
+    res.type('json');
+
+    try {
+      next();
+    } catch (except) {
+      console.log('[ERROR] ' + except);
+      res.status(500);
+    }
+
+    console.log('[INFO] Replying to request with HTTP ' + res.statusCode);
+    res.end();
   });
 
-  dispatcher.onPost(mappings['ask'], function(req, response) {
+  app.get(mappings['home'], function(req, res) {
+    console.log('[DEBUG] Returned \'Hello World!\'');
+    res.status(200).send('Hello World!');
+  });
+
+  app.post(mappings['ask'], function(req, res) {
     var responseCode = 201;
-    var body = {};
+    var id = {'id': database.addAsk(req.body)};
 
-    try {
-      var body = {
-        'id': database.addAsk(JSON.parse(req.body))
-      };
-    } catch (except) {
-      console.log('[ERROR] ' + except);
-      responseCode = 500
-    }
-
-    response.writeHead(responseCode, {
-        'Access-Control-Allow-Origin' : '*',
-        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
-    });
-    console.log('[INFO] Replying to request with HTTP ' + response.statusCode);
-    response.end(JSON.stringify(body));
+    res.status(responseCode).send(id);
   });
 
-  dispatcher.onGet(mappings['ask'], function(req, response) {
+  app.get(mappings['ask'], function(req, res) {
     var responseCode = 200;
-    var body = {};
+    var asks = database.getAllAsks();
 
-    try {
-      var body = database.getAllAsks();
-    } catch (except) {
-      console.log('[ERROR] ' + except);
-      responseCode = 500
-    }
-
-    response.writeHead(responseCode, {
-      'Access-Control-Allow-Origin' : '*',
-      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
-    });
-    console.log('[INFO] Replying to request with HTTP ' + response.statusCode);
-    response.end(JSON.stringify(body));
+    res.status(responseCode).send(asks);
   });
 
-  dispatcher.onPost(mappings['askStatus'], function(req, response) {
+  app.post(mappings['askStatus'], function(req, res) {
     var responseCode = 200;
-    var body = {};
+    var updatedStatus = database.fulfillAskStatus(req.body);
 
-    try {
-      var updatedStatus = database.fulfillAskStatus(JSON.parse(req.body));
-    } catch (except) {
-      console.log('[ERROR] ' + except);
-      responseCode = 500;
-    }
-
-    if (updatedStatus == "") {
+    var id = {};
+    if (updatedStatus == '') {
       responseCode = 400;
-      body = {
-        "error": "The given ID was not found."
-      };
+      id = {'error': 'The given ID was not found.'};
     } else {
-      body = {
-        'id': updatedStatus
-      };
+      id = {'id': updatedStatus};
     }
 
-    response.writeHead(responseCode, {
-      'Access-Control-Allow-Origin' : '*',
-      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
-    });
-    console.log('[INFO] Replying to request with HTTP ' + response.statusCode);
-    response.end(JSON.stringify(body));
+    res.status(responseCode).send(id);
   });
 
-  dispatcher.onPost(mappings['give'], function(req, response) {
+  app.post(mappings['give'], function(req, res) {
     var responseCode = 200;
-    var body = {};
+    var id = {'id': database.addGive(req.body)};
 
-    try {
-      var body = {
-        'id': database.addGive(JSON.parse(req.body))
-      };
-    } catch (except) {
-      console.log('[ERROR] ' + except);
-      responseCode = 500
-    }
-
-    response.writeHead(responseCode, {
-      'Access-Control-Allow-Origin' : '*',
-      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
-    });
-    console.log('[INFO] Replying to request with HTTP ' + response.statusCode);
-    response.end(JSON.stringify(body));
+    res.status(responseCode).send(id);
   });
 
-  dispatcher.onGet(mappings['give'], function(req, response) {
+  app.get(mappings['give'], function(req, res) {
     var responseCode = 200;
-    var body = {};
+    var gives = database.getAllGives();
 
-    try {
-      var body = database.getAllGives();
-    } catch (except) {
-      console.log('[ERROR] ' + except);
-      responseCode = 500
-    }
-
-    response.writeHead(responseCode, {
-      'Access-Control-Allow-Origin' : '*',
-      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
-    });
-    console.log('[INFO] Replying to request with HTTP ' + response.statusCode);
-    response.end(JSON.stringify(body));
+    res.status(responseCode).send(gives);
   });
 
-  dispatcher.onPost(mappings['clear'], function(req, response) {
+  app.post(mappings['clear'], function(req, res) {
     var responseCode = 200;
-    var body = {};
+    database.clearAll();
 
-    database.clearAll()
-
-    response.writeHead(responseCode, {
-      'Access-Control-Allow-Origin' : '*',
-      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
-    });
-    console.log('[INFO] Replying to request with HTTP ' + response.statusCode);
-    response.end(JSON.stringify(body));
+    res.status(responseCode).end();
   });
 
 }
 
 function main() {
-  setMappings(dispatcher);
-
-  var server = http.createServer(function(request, response) {
-    console.log('[INFO] Mapped ' + request.url);
-    try {
-      dispatcher.dispatch(request, response);
-    } catch (except) {
-      console.log('[ERROR] ' + except);
-    }
-  });
-
-  server.listen(serverOptions, function() {
-    console.log('[INFO] Server listening on http://localhost:%s.', serverOptions['port']);
-  });
+  setMappings(app);
+  app.listen(serverOptions['port'], () => console.log(
+      `[INFO] Server listening on http://localhost:${serverOptions['port']}.`
+  ));
 }
 
-main()
+main();
