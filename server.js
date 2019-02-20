@@ -60,7 +60,7 @@ function setMappings(app) {
     res.status(responseCode).send(asks);
   });
 
-  app.post(mappings['askStatus'], function(req, res) {
+  app.put(mappings['askStatus'], function(req, res) {
     let responseCode = 200;
     let updatedStatus = database.fulfillAskStatus(req.body);
 

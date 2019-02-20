@@ -6,7 +6,7 @@ base_url=$(../utility/base_url)
 if [ $# -ge 1 ] ; then
     curl \
       --include \
-      --request POST \
+      --request PUT \
       --header "Content-Type: application/json" \
       --data  '{"id": "'$1'"}' \
       $base_url/ask/status
