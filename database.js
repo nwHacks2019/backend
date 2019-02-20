@@ -68,7 +68,7 @@ function convertStatusValueToStatus(obj) {
   delete obj['status_value'];
 }
 
-function connectAskGive(ask, give) {
+function connectAskGive(req, ask, give) {
   give['status_value']++;
   give['match_id'] = ask['id'];
   give['match_name'] = ask['user_name']
@@ -82,27 +82,27 @@ function connectAskGive(ask, give) {
   ask['match_location'] = give['user_location']
 
   console.log(
-    '[DEBUG] Connected corresponding unmatched Give with id {' +
-    give['id'] + '} to this Ask');
+    `[DEBUG][REQ ${req.num}] Connected corresponding unmatched Give with ` +
+    `id {${give['id']}} to this Ask`);
 }
 
 module.exports = {
 
-  addAsk: function addAsk(requestBody) {
+  addAsk: function addAsk(req, requestBody) {
     let obj = convertAskGiveBody(requestBody);
 
     // Optional matching
     for (let i = 0; i < gives.length; i++) {
       // First unmatched Give which has the same item
       if (gives[i]['status_value'] == 0 && gives[i]['item'] === obj['item']) {
-        connectAskGive(obj, gives[i]);
+        connectAskGive(req, obj, gives[i]);
         break;
       }
     }
 
     console.log(
-      '[DEBUG] Creating Ask ID {' + obj['id'] +
-      '} containing ' + JSON.stringify(obj));
+      `[DEBUG][REQ ${req.num}] Creating Ask ID {${obj['id']} ` +
+      `} containing ${JSON.stringify(obj)}`);
 
     asks.push(obj);
     return obj['id'];
@@ -115,7 +115,7 @@ module.exports = {
   // Returns:
   //   On success: New status (String)
   //   If the ID was not found: Empty string
-  fulfillAskStatus: function fulfillAskStatus(requestBody) {
+  fulfillAskStatus: function fulfillAskStatus(req, requestBody) {
     let id = requestBody['id'];
 
     let ask = findAsk(id);
@@ -124,29 +124,29 @@ module.exports = {
     }
 
     if ('match_id' in ask) {
-      console.log('[DEBUG] Fulfilling linked Give with id {' + ask['match_id'] + '}')
+      console.log(`[DEBUG][REQ ${req.num}] Fulfilling linked Give ` +
+        `with id {${ask['match_id']}}`)
       let give = findGive(ask['match_id']);
       give['status_value'] = requestState.length - 1; // Last value
     } else {
-      console.log('[DEBUG] No linked Give')
+      console.log(`[DEBUG][REQ ${req.num}] No linked Give`)
     }
 
     ask['status_value'] = requestState.length - 1; // Last value
     return getStatus(ask);
   },
 
-  addGive: function addGive(requestBody) {
+  addGive: function addGive(req, requestBody) {
     let obj = convertAskGiveBody(requestBody);
 
-    console.log(
-      '[DEBUG] Creating Give ID {' + obj['id'] +
-      '} containing ' + JSON.stringify(obj));
+    console.log(`[DEBUG][REQ ${req.num}] Creating Give ID {${obj['id']}} ` +
+      `containing ${JSON.stringify(obj)}`);
 
     gives.push(obj);
     return obj['id'];
   },
 
-  getAllAsks: function getAllAsks() {
+  getAllAsks: function getAllAsks(req) {
     let asksReturn = copyJsonObject(asks);
     for (let i = 0; i < asksReturn.length; i++) {
       convertStatusValueToStatus(asksReturn[i])
@@ -154,7 +154,7 @@ module.exports = {
     return asksReturn;
   },
 
-  getAllGives: function getAllGives() {
+  getAllGives: function getAllGives(req) {
     let givesReturn = copyJsonObject(gives);
     for (let i = 0; i < givesReturn.length; i++) {
       convertStatusValueToStatus(givesReturn[i])
@@ -162,7 +162,7 @@ module.exports = {
     return givesReturn;
   },
 
-  clearAll: function clearAll() {
+  clearAll: function clearAll(req) {
     asks = [];
     gives = [];
   }

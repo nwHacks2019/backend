@@ -15,7 +15,9 @@ const mappings = {
   'clear': '/clear'
 };
 
-
+const globalVars = {
+  requestCount: 0
+};
 
 // This function sets the URL mappings for endpoints.
 function setMappings(app) {
@@ -23,7 +25,10 @@ function setMappings(app) {
   app.use(bodyParser.json());
 
   app.all('*', function(req, res, next) {
-    console.log(`[INFO] Mapped ${req.method} ${req.originalUrl}`);
+    req.num = globalVars.requestCount++;
+
+    console.log(`[INFO][REQ ${req.num}] ` +
+      `Mapped ${req.method} ${req.originalUrl}`);
 
     res.set('Access-Control-Allow-Origin', '*');
     res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -33,36 +38,36 @@ function setMappings(app) {
     try {
       next();
     } catch (except) {
-      console.log('[ERROR] ' + except);
+      console.log(`[ERROR][REQ ${req.num}] ${except}`);
       res.status(500);
     }
 
-    console.log('[INFO] Replying to request with HTTP ' + res.statusCode);
+    console.log(`[INFO][REQ ${req.num}] ` +
+      `Replying to request with HTTP ${res.statusCode}`);
     res.end();
   });
 
   app.get(mappings['home'], function(req, res) {
-    console.log('[DEBUG] Returned \'Hello World!\'');
     res.status(200).send('Hello World!');
   });
 
   app.post(mappings['ask'], function(req, res) {
     let responseCode = 201;
-    let id = {'id': database.addAsk(req.body)};
+    let id = {'id': database.addAsk(req, req.body)};
 
     res.status(responseCode).send(id);
   });
 
   app.get(mappings['ask'], function(req, res) {
     let responseCode = 200;
-    let asks = database.getAllAsks();
+    let asks = database.getAllAsks(req);
 
     res.status(responseCode).send(asks);
   });
 
   app.put(mappings['askStatus'], function(req, res) {
     let responseCode = 200;
-    let updatedStatus = database.fulfillAskStatus(req.body);
+    let updatedStatus = database.fulfillAskStatus(req, req.body);
 
     let id = {};
     if (updatedStatus == '') {
@@ -77,21 +82,21 @@ function setMappings(app) {
 
   app.post(mappings['give'], function(req, res) {
     let responseCode = 200;
-    let id = {'id': database.addGive(req.body)};
+    let id = {'id': database.addGive(req, req.body)};
 
     res.status(responseCode).send(id);
   });
 
   app.get(mappings['give'], function(req, res) {
     let responseCode = 200;
-    let gives = database.getAllGives();
+    let gives = database.getAllGives(req);
 
     res.status(responseCode).send(gives);
   });
 
   app.post(mappings['clear'], function(req, res) {
     let responseCode = 200;
-    database.clearAll();
+    database.clearAll(req);
 
     res.status(responseCode).end();
   });
