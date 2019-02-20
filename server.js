@@ -23,7 +23,7 @@ function setMappings(app) {
   app.use(bodyParser.json());
 
   app.all('*', function(req, res, next) {
-    console.log(`[INFO] Mapped ${req.url}`);
+    console.log(`[INFO] Mapped ${req.method} ${req.originalUrl}`);
 
     res.set('Access-Control-Allow-Origin', '*');
     res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
