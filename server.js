@@ -15,6 +15,8 @@ const mappings = {
   'clear': '/clear'
 };
 
+
+
 // This function sets the URL mappings for endpoints.
 function setMappings(app) {
 
@@ -45,24 +47,24 @@ function setMappings(app) {
   });
 
   app.post(mappings['ask'], function(req, res) {
-    var responseCode = 201;
-    var id = {'id': database.addAsk(req.body)};
+    let responseCode = 201;
+    let id = {'id': database.addAsk(req.body)};
 
     res.status(responseCode).send(id);
   });
 
   app.get(mappings['ask'], function(req, res) {
-    var responseCode = 200;
-    var asks = database.getAllAsks();
+    let responseCode = 200;
+    let asks = database.getAllAsks();
 
     res.status(responseCode).send(asks);
   });
 
   app.post(mappings['askStatus'], function(req, res) {
-    var responseCode = 200;
-    var updatedStatus = database.fulfillAskStatus(req.body);
+    let responseCode = 200;
+    let updatedStatus = database.fulfillAskStatus(req.body);
 
-    var id = {};
+    let id = {};
     if (updatedStatus == '') {
       responseCode = 400;
       id = {'error': 'The given ID was not found.'};
@@ -74,21 +76,21 @@ function setMappings(app) {
   });
 
   app.post(mappings['give'], function(req, res) {
-    var responseCode = 200;
-    var id = {'id': database.addGive(req.body)};
+    let responseCode = 200;
+    let id = {'id': database.addGive(req.body)};
 
     res.status(responseCode).send(id);
   });
 
   app.get(mappings['give'], function(req, res) {
-    var responseCode = 200;
-    var gives = database.getAllGives();
+    let responseCode = 200;
+    let gives = database.getAllGives();
 
     res.status(responseCode).send(gives);
   });
 
   app.post(mappings['clear'], function(req, res) {
-    var responseCode = 200;
+    let responseCode = 200;
     database.clearAll();
 
     res.status(responseCode).end();

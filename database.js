@@ -1,15 +1,15 @@
 const uuidv4 = require('uuid/v4');
 const timestamp = require('unix-timestamp');
 
-var asks = [];
-var gives = [];
+let asks = [];
+let gives = [];
 
 function copyJsonObject(object) {
   return JSON.parse(JSON.stringify(object));
 }
 
 function isEmpty(object) {
-  for (var key in object) {
+  for (let key in object) {
     if (object.hasOwnProperty(key)) {
       return false;
     }
@@ -24,7 +24,7 @@ const requestState = [
 ];
 
 function findAsk(id) {
-  for (var i = 0; i < asks.length; i++) {
+  for (let i = 0; i < asks.length; i++) {
     if (id === asks[i]['id']) {
       return asks[i];
     }
@@ -33,7 +33,7 @@ function findAsk(id) {
 }
 
 function findGive(id) {
-  for (var i = 0; i < gives.length; i++) {
+  for (let i = 0; i < gives.length; i++) {
     if (id === gives[i]['id']) {
       return gives[i];
     }
@@ -42,7 +42,7 @@ function findGive(id) {
 }
 
 function convertAskGiveBody(requestBody) {
-  var obj = { // Cloned fields from requestBody
+  let obj = { // Cloned fields from requestBody
     'user_name': requestBody['user_name'],
     'user_email': requestBody['user_email'],
     'user_location': requestBody['user_location'],
@@ -51,7 +51,7 @@ function convertAskGiveBody(requestBody) {
   }
 
   // Additional fields
-  var id = uuidv4();
+  let id = uuidv4();
   obj['id'] = id;
   obj['posted'] = timestamp.now();
   obj['status_value'] = 0;
@@ -89,10 +89,10 @@ function connectAskGive(ask, give) {
 module.exports = {
 
   addAsk: function addAsk(requestBody) {
-    var obj = convertAskGiveBody(requestBody);
+    let obj = convertAskGiveBody(requestBody);
 
     // Optional matching
-    for (var i = 0; i < gives.length; i++) {
+    for (let i = 0; i < gives.length; i++) {
       // First unmatched Give which has the same item
       if (gives[i]['status_value'] == 0 && gives[i]['item'] === obj['item']) {
         connectAskGive(obj, gives[i]);
@@ -116,16 +116,16 @@ module.exports = {
   //   On success: New status (String)
   //   If the ID was not found: Empty string
   fulfillAskStatus: function fulfillAskStatus(requestBody) {
-    var id = requestBody['id'];
+    let id = requestBody['id'];
 
-    var ask = findAsk(id);
+    let ask = findAsk(id);
     if (isEmpty(ask)) {
       return "";
     }
 
     if ('match_id' in ask) {
       console.log('[DEBUG] Fulfilling linked Give with id {' + ask['match_id'] + '}')
-      var give = findGive(ask['match_id']);
+      let give = findGive(ask['match_id']);
       give['status_value'] = requestState.length - 1; // Last value
     } else {
       console.log('[DEBUG] No linked Give')
@@ -136,7 +136,7 @@ module.exports = {
   },
 
   addGive: function addGive(requestBody) {
-    var obj = convertAskGiveBody(requestBody);
+    let obj = convertAskGiveBody(requestBody);
 
     console.log(
       '[DEBUG] Creating Give ID {' + obj['id'] +
@@ -147,16 +147,16 @@ module.exports = {
   },
 
   getAllAsks: function getAllAsks() {
-    var asksReturn = copyJsonObject(asks);
-    for (var i = 0; i < asksReturn.length; i++) {
+    let asksReturn = copyJsonObject(asks);
+    for (let i = 0; i < asksReturn.length; i++) {
       convertStatusValueToStatus(asksReturn[i])
     }
     return asksReturn;
   },
 
   getAllGives: function getAllGives() {
-    var givesReturn = copyJsonObject(gives);
-    for (var i = 0; i < givesReturn.length; i++) {
+    let givesReturn = copyJsonObject(gives);
+    for (let i = 0; i < givesReturn.length; i++) {
       convertStatusValueToStatus(givesReturn[i])
     }
     return givesReturn;
