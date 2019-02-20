@@ -8,6 +8,15 @@ function copyJsonObject(object) {
   return JSON.parse(JSON.stringify(object));
 }
 
+function isEmpty(object) {
+  for (var key in object) {
+    if (object.hasOwnProperty(key)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 const requestState = [
   'unmatched',
   'matched',
@@ -110,7 +119,7 @@ module.exports = {
     var id = requestBody['id'];
 
     var ask = findAsk(id);
-    if (ask == {}) {
+    if (isEmpty(ask)) {
       return "";
     }
 
