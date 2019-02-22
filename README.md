@@ -6,7 +6,7 @@
 
 [Express.js](https://expressjs.com/) server for processing and storing community help requests for Give+Seek, a platform for human connection and support when we need it most.
 
-The server was hosted on [Google Cloud Platform](https://cloud.google.com/) while it was active during the hackathon.
+The server is currently hosted on [Heroku](https://giveandseek.herokuapp.com/). The server was hosted on [Google Cloud Platform](https://cloud.google.com/) while it was active during the hackathon.
 
 ## Setup
 
