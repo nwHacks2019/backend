@@ -1,0 +1,25 @@
+@font-face {
+  font-family: 'Trebuchet MS';
+  src: url('../fonts/trebuchet-ms-regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Trebuchet MS';
+  src: url('../fonts/trebuchet-ms-bold.ttf') format('truetype');
+  font-weight: bold;
+}
+
+body {
+  font-family: 'Trebuchet MS';
+}
+
+.center {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#text {
+  font-size: 3em;
+  text-align: center;
+}

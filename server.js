@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser');
-const app = require('express')();
+const express = require('express');
+const app = express();
 
 const database = require('./database');
 
@@ -23,6 +24,7 @@ const globalVars = {
 function setMappings(app) {
 
   app.use(bodyParser.json());
+  app.use(express.static('public'));
 
   app.all('*', function(req, res, next) {
     req.num = globalVars.requestCount++;
