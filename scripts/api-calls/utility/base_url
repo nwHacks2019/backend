@@ -1,6 +1,7 @@
 #!/bin/sh
 
 local="http://localhost:3000"
-prod="http://giveseek.appspot.com"
+prod="https://giveandseek.herokuapp.com"
 
 echo $local
+
