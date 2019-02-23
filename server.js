@@ -33,6 +33,7 @@ function setMappings(app) {
       `Mapped ${req.method} ${req.originalUrl}`);
 
     res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Headers', '*');
     res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 
     res.type('json');
