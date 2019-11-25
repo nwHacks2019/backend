@@ -4,9 +4,9 @@
 
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/nwHacks2019/backend/blob/master/LICENSE)
 
-[Express.js](https://expressjs.com/) server for processing and storing community help requests for Give+Seek, a platform for human connection and support when we need it most.
+[Express.js](https://expressjs.com/) server is used for processing and storing community help requests for Give+Seek, a platform for human connection and support.
 
-The server is currently hosted on [Heroku](https://giveandseek.herokuapp.com/). The server was hosted on [Google Cloud Platform](https://cloud.google.com/) while it was active during the hackathon.
+The server is hosted on [Heroku](https://giveandseek.herokuapp.com/). The server was hosted on [Google Cloud Platform](https://cloud.google.com/) while it was active during the hackathon.
 
 ## Setup
 
@@ -22,7 +22,7 @@ Start the server locally:
 npm start
 ```
 
-The server will be running on http://localhost:3000/.
+The server will be running on http://localhost:3000/. so click on the link or copy-paste it on a browser.
 
 ## API
 
